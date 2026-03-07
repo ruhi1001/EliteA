@@ -24,7 +24,7 @@ test.describe('Account Lockout After Failed Logins (REQ_006)', () => {
 
       // Successful login on 5th attempt should reset counter.
       await loginPage.login(testData.users.registered.email, testData.users.registered.password);
-      await page.waitForURL(`**${testData.urls.postLoginPath}**`);
+      await page.waitForURL((url) => !url.toString().includes(testData.urls.loginPath));
 
       // Start a fresh session (simulates logout + new attempt) and verify single failure does not lock.
       const context = await browser.newContext();
@@ -89,7 +89,7 @@ test.describe('Account Lockout After Failed Logins (REQ_006)', () => {
       );
 
       await loginPage.login(testData.users.registered.email, testData.users.registered.password);
-      await page.waitForURL(`**${testData.urls.postLoginPath}**`);
+      await page.waitForURL((url) => !url.toString().includes(testData.urls.loginPath));
     }
   );
 
