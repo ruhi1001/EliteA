@@ -1,4 +1,4 @@
-import { test, expect, Page } from '@playwright/test';
+import { test, expect, Page, Browser } from '@playwright/test';
 import { ResetPasswordPage } from '../pages/ResetPasswordPage';
 import { testData } from '../utils/testData';
 
@@ -9,7 +9,7 @@ const getLinkOrSkip = (testId: string): string => {
 };
 
 const createPageWithClientTimeOffsetMs = async (
-  browser: any,
+  browser: Browser,
   offsetMs: number
 ): Promise<Page> => {
   const context = await browser.newContext();
