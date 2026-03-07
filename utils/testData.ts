@@ -90,8 +90,36 @@ export const testData = {
    * Feature flags / capabilities.
    */
   capabilities: {
-    hasDeterministicResetLinks: Boolean(process.env.RESET_LINK_FRESH),
+    hasAnyResetLink:
+      Boolean(process.env.RESET_LINK_FRESH) ||
+      Boolean(process.env.RESET_LINK_EXPIRED) ||
+      Boolean(process.env.RESET_LINK_USED),
     hasPasswordHistoryFixtures: Boolean(process.env.TEST_PASSWORD_NEW_NOT_IN_HISTORY)
+  },
+
+  /**
+   * Gets a reset link for a specific ConvoQA test id.
+   * @param testId - ConvoQA test id, e.g. "TC_REQ002_01".
+   * @returns Reset link if present; otherwise empty string.
+   */
+  getResetLinkForTest(testId: string): string {
+    return (
+      process.env[`RESET_LINK_${testId}`] ||
+      // Backward compatible fallbacks
+      (testId === 'TC_REQ002_01' ? process.env.RESET_LINK_FRESH : undefined) ||
+      (testId === 'TC_REQ002_03' ? process.env.RESET_LINK_EXPIRED : undefined) ||
+      ''
+    );
+  },
+
+  /**
+   * Requires a reset link for a specific ConvoQA test id.
+   * @param testId - ConvoQA test id, e.g. "TC_REQ003_01".
+   * @returns Reset link.
+   */
+  requireResetLinkForTest(testId: string): string {
+    const key = `RESET_LINK_${testId}`;
+    return process.env[key] || requiredEnv(key);
   },
 
   requiredEnv
