@@ -43,11 +43,37 @@ export const testData = {
   /**
    * Reset links are environment-driven because generating/reading email links
    * depends on the AUT implementation and test mailbox.
+   *
+   * Recommended: provide per-test links like RESET_LINK_TC_REQ002_01.
+   * Fallbacks are supported via RESET_LINK_FRESH / RESET_LINK_EXPIRED / RESET_LINK_USED.
    */
   resetLinks: {
     fresh: process.env.RESET_LINK_FRESH || '',
     expired: process.env.RESET_LINK_EXPIRED || '',
     used: process.env.RESET_LINK_USED || ''
+  },
+
+  /**
+   * Expected UI messaging. Override in env vars to match AUT copy.
+   */
+  messages: {
+    forgotPasswordConfirmation:
+      process.env.MSG_FORGOT_PASSWORD_CONFIRMATION ||
+      'If an account exists for this email, we have sent a password reset link.',
+    resetLinkExpired:
+      process.env.MSG_RESET_LINK_EXPIRED || 'This password reset link has expired.',
+    resetTokenInvalid:
+      process.env.MSG_RESET_TOKEN_INVALID || 'This password reset link is invalid or has already been used.',
+    passwordMinLength:
+      process.env.MSG_PASSWORD_MIN_LENGTH || 'Password must be at least 8 characters.',
+    passwordMissingUppercase:
+      process.env.MSG_PASSWORD_MISSING_UPPERCASE || 'Password must include at least one uppercase letter.',
+    passwordMissingDigit:
+      process.env.MSG_PASSWORD_MISSING_DIGIT || 'Password must include at least one number.',
+    passwordReuseNotAllowed:
+      process.env.MSG_PASSWORD_REUSE_NOT_ALLOWED || 'You cannot reuse your last 3 passwords.',
+    accountLocked:
+      process.env.MSG_ACCOUNT_LOCKED || 'Your account is locked. Please try again in 15 minutes.'
   },
 
   /**
