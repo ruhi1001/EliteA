@@ -17,6 +17,47 @@ const requiredEnv = (key: string): string => {
 };
 
 export const testData = {
+  urls: {
+    loginPath: '/login',
+    forgotPasswordPath: '/forgot-password',
+    profilePath: '/profile'
+  },
+
+  users: {
+    registered: {
+      email: process.env.TEST_REGISTERED_EMAIL || 'registered.user@example.com',
+      password: process.env.TEST_REGISTERED_PASSWORD || 'CorrectPassword123!'
+    } satisfies UserCredentials,
+
+    unregistered: {
+      email: process.env.TEST_UNREGISTERED_EMAIL || 'unregistered.user@example.com'
+    }
+  },
+
+  passwords: {
+    validComplex: process.env.TEST_PASSWORD_VALID_COMPLEX || 'Abcdef1G',
+    tooShort: process.env.TEST_PASSWORD_TOO_SHORT || 'Abcde12',
+    noUppercase: process.env.TEST_PASSWORD_NO_UPPERCASE || 'abcdefg1',
+    noDigit: process.env.TEST_PASSWORD_NO_DIGIT || 'AbcdefgH'
+  },
+
+  /**
+   * Profile update fixtures.
+   * Use env vars to keep these deterministic per environment.
+   */
+  profile: {
+    updateApiUrlPattern: process.env.PROFILE_UPDATE_API_URL_PATTERN || '**/profile**',
+    valid: {
+      fullName: process.env.TEST_PROFILE_FULL_NAME || 'Updated User',
+      address: process.env.TEST_PROFILE_ADDRESS || '221B Baker Street',
+      phone10Digits: process.env.TEST_PROFILE_PHONE_10_DIGITS || '5551234567'
+    },
+    emails: {
+      newEmail1: process.env.TEST_PROFILE_NEW_EMAIL_1 || 'updated.email1@example.com',
+      newEmail2: process.env.TEST_PROFILE_NEW_EMAIL_2 || 'updated.email2@example.com'
+    }
+  },
+
     forgotPasswordPath: '/forgot-password',
     profilePath: '/profile'
     loginPath: '/login',
@@ -50,7 +91,10 @@ export const testData = {
    */
   resetLinks: {
     fresh: process.env.RESET_LINK_FRESH || '',
-    expired: process.env.RESET_LINK_EXPIRED || '',
+      process.env.MSG_ACCOUNT_LOCKED || 'Your account is locked. Please try again in 15 minutes.',
+
+    profileSaveSuccess: process.env.MSG_PROFILE_SAVE_SUCCESS || 'Profile updated successfully.',
+    profileSaveError: process.env.MSG_PROFILE_SAVE_ERROR || 'Unable to update profile. Please try again.'
     used: process.env.RESET_LINK_USED || ''
   },
 
