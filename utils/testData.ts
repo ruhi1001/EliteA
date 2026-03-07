@@ -73,7 +73,9 @@ export const testData = {
     passwordReuseNotAllowed:
       process.env.MSG_PASSWORD_REUSE_NOT_ALLOWED || 'You cannot reuse your last 3 passwords.',
     accountLocked:
-      process.env.MSG_ACCOUNT_LOCKED || 'Your account is locked. Please try again in 15 minutes.'
+      process.env.MSG_ACCOUNT_LOCKED || 'Your account is locked. Please try again in 15 minutes.',
+    passwordResetSuccess:
+      process.env.MSG_PASSWORD_RESET_SUCCESS || 'Your password has been reset successfully.'
   },
 
   /**
