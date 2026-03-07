@@ -7,10 +7,17 @@ const isInvalid = async (locator: Locator): Promise<boolean> => {
 };
 
 const waitForSubmitRequestOrNull = async (page: Page, timeoutMs: number) => {
+  // Convert a Playwright glob (e.g. "**/contact**") into a simple substring hint ("/contact").
+  const urlHint = testData.contact.submitApiUrlPattern.replace(/\*/g, '');
+
   return page
     .waitForRequest(
-      (req) =>
-        req.url().includes('contact') && ['POST', 'PUT'].includes(req.method().toUpperCase()),
+      (req) => {
+        const method = req.method().toUpperCase();
+        const isSubmitMethod = ['POST', 'PUT'].includes(method);
+        const matchesHint = urlHint ? req.url().includes(urlHint) : true;
+        return isSubmitMethod && matchesHint;
+      },
       { timeout: timeoutMs }
     )
     .catch(() => null);
