@@ -15,6 +15,7 @@ const requiredEnv = (key: string): string => {
   }
   return value;
 };
+    homePath: process.env.HOME_PATH || '/',
 
 export const testData = {
   urls: {
@@ -123,6 +124,21 @@ export const testData = {
    * Feature flags / capabilities.
    */
   capabilities: {
+
+  /**
+   * Newsletter signup routes and fixtures.
+   */
+  newsletter: {
+    homePath: process.env.HOME_PATH || '/',
+
+    // Used by tests that navigate away from the homepage and then return.
+    // Defaults to the Contact page route, which is already automated in this repo.
+    navigationAwayPath: process.env.NEWSLETTER_NAV_AWAY_PATH || process.env.CONTACT_PATH || '/contact',
+
+    validEmail: process.env.TEST_NEWSLETTER_VALID_EMAIL || 'newsletter.tester@example.com',
+    invalidEmail: process.env.TEST_NEWSLETTER_INVALID_EMAIL || 'invalid-email',
+    whitespaceOnly: '   '
+  },
     hasAnyResetLink:
       Boolean(process.env.RESET_LINK_FRESH) ||
       Boolean(process.env.RESET_LINK_EXPIRED) ||
@@ -179,3 +195,8 @@ export const testData = {
 
   requiredEnv
 };
+
+      'Unable to submit your message. Please try again later.',
+
+    newsletterSubscribeSuccess:
+      process.env.MSG_NEWSLETTER_SUBSCRIBE_SUCCESS || 'Successfully subscribed.'
