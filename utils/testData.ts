@@ -17,7 +17,8 @@ const requiredEnv = (key: string): string => {
 };
 
 export const testData = {
-  urls: {
+    forgotPasswordPath: '/forgot-password',
+    profilePath: '/profile'
     loginPath: '/login',
     forgotPasswordPath: '/forgot-password'
   },
@@ -63,6 +64,23 @@ export const testData = {
     resetLinkExpired:
       process.env.MSG_RESET_LINK_EXPIRED || 'This password reset link has expired.',
     resetTokenInvalid:
+
+  /**
+   * Profile update fixtures.
+   * Use env vars to keep these deterministic per environment.
+   */
+  profile: {
+    updateApiUrlPattern: process.env.PROFILE_UPDATE_API_URL_PATTERN || '**/profile**',
+    valid: {
+      fullName: process.env.TEST_PROFILE_FULL_NAME || 'Updated User',
+      address: process.env.TEST_PROFILE_ADDRESS || '221B Baker Street',
+      phone10Digits: process.env.TEST_PROFILE_PHONE_10_DIGITS || '5551234567'
+    },
+    emails: {
+      newEmail1: process.env.TEST_PROFILE_NEW_EMAIL_1 || 'updated.email1@example.com',
+      newEmail2: process.env.TEST_PROFILE_NEW_EMAIL_2 || 'updated.email2@example.com'
+    }
+  },
       process.env.MSG_RESET_TOKEN_INVALID || 'This password reset link is invalid or has already been used.',
     passwordMinLength:
       process.env.MSG_PASSWORD_MIN_LENGTH || 'Password must be at least 8 characters.',
@@ -123,4 +141,7 @@ export const testData = {
   },
 
   requiredEnv
-};
+      process.env.MSG_ACCOUNT_LOCKED || 'Your account is locked. Please try again in 15 minutes.',
+
+    profileSaveSuccess: process.env.MSG_PROFILE_SAVE_SUCCESS || 'Profile updated successfully.',
+    profileSaveError: process.env.MSG_PROFILE_SAVE_ERROR || 'Unable to update profile. Please try again.'
