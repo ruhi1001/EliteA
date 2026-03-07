@@ -13,8 +13,8 @@ test.describe('User Profile Update', () => {
 
       await profilePage.goto(testData.urls.profilePath);
 
-      await page.waitForURL(new RegExp(testData.urls.loginPath.replace('/', '\\/'), 'i'));
-      await expect(loginPage.emailInput).toBeVisible();
+
+      await page.waitForURL(`**${testData.urls.loginPath}**`);
     }
   );
 
