@@ -19,7 +19,8 @@ const requiredEnv = (key: string): string => {
 export const testData = {
   urls: {
     loginPath: '/login',
-    forgotPasswordPath: '/forgot-password'
+    forgotPasswordPath: '/forgot-password',
+    postLoginPath: process.env.POST_LOGIN_PATH || '/'
   },
 
   users: {
@@ -72,6 +73,8 @@ export const testData = {
       process.env.MSG_PASSWORD_MISSING_DIGIT || 'Password must include at least one number.',
     passwordReuseNotAllowed:
       process.env.MSG_PASSWORD_REUSE_NOT_ALLOWED || 'You cannot reuse your last 3 passwords.',
+    invalidCredentials:
+      process.env.MSG_INVALID_CREDENTIALS || 'Invalid email or password.',
     accountLocked:
       process.env.MSG_ACCOUNT_LOCKED || 'Your account is locked. Please try again in 15 minutes.',
     passwordResetSuccess:
