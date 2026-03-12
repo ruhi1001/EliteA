@@ -43,6 +43,11 @@ export class ProfilePage {
     this.saveButton = page.getByRole('button', { name: /save/i });
     this.cancelButton = page.getByRole('button', { name: /cancel/i });
 
+    // Prefer role=status for non-blocking confirmations.
+    this.successBanner = page.getByRole('status');
+    this.errorBanner = page.getByRole('alert');
+  }
+
   /**
    * Navigates to the Profile page.
    * @param path - Profile path relative to baseURL.
@@ -146,4 +151,3 @@ export class ProfilePage {
   }
 
   // Methods are added incrementally.
-}
