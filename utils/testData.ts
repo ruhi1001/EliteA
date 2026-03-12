@@ -15,13 +15,14 @@ const requiredEnv = (key: string): string => {
   }
   return value;
 };
-    homePath: process.env.HOME_PATH || '/',
-
 export const testData = {
   urls: {
-    loginPath: '/login',
-    forgotPasswordPath: '/forgot-password',
-    profilePath: '/profile'
+    homePath: process.env.HOME_PATH || '/',
+    loginPath: process.env.LOGIN_PATH || '/login',
+    forgotPasswordPath: process.env.FORGOT_PASSWORD_PATH || '/forgot-password',
+    resetPasswordPath: process.env.RESET_PASSWORD_PATH || '/reset-password',
+    profilePath: process.env.PROFILE_PATH || '/profile',
+    settingsPath: process.env.SETTINGS_PATH || '/settings'
   },
 
   users: {
@@ -62,9 +63,6 @@ export const testData = {
   /**
    * Reset links are environment-driven because generating/reading email links
    * depends on the AUT implementation and test mailbox.
-   *
-   * Recommended: provide per-test links like RESET_LINK_TC_REQ002_01.
-   * Fallbacks are supported via RESET_LINK_FRESH / RESET_LINK_EXPIRED / RESET_LINK_USED.
    */
   resetLinks: {
     fresh: process.env.RESET_LINK_FRESH || '',
@@ -79,13 +77,13 @@ export const testData = {
     forgotPasswordConfirmation:
       process.env.MSG_FORGOT_PASSWORD_CONFIRMATION ||
       'If an account exists for this email, we have sent a password reset link.',
-    resetLinkExpired:
-      process.env.MSG_RESET_LINK_EXPIRED || 'This password reset link has expired.',
+
+    resetLinkExpired: process.env.MSG_RESET_LINK_EXPIRED || 'This password reset link has expired.',
     resetTokenInvalid:
       process.env.MSG_RESET_TOKEN_INVALID ||
       'This password reset link is invalid or has already been used.',
-    passwordMinLength:
-      process.env.MSG_PASSWORD_MIN_LENGTH || 'Password must be at least 8 characters.',
+
+    passwordMinLength: process.env.MSG_PASSWORD_MIN_LENGTH || 'Password must be at least 8 characters.',
     passwordMissingUppercase:
       process.env.MSG_PASSWORD_MISSING_UPPERCASE ||
       'Password must include at least one uppercase letter.',
@@ -93,21 +91,16 @@ export const testData = {
       process.env.MSG_PASSWORD_MISSING_DIGIT || 'Password must include at least one number.',
     passwordReuseNotAllowed:
       process.env.MSG_PASSWORD_REUSE_NOT_ALLOWED || 'You cannot reuse your last 3 passwords.',
-    accountLocked:
-      process.env.MSG_ACCOUNT_LOCKED || 'Your account is locked. Please try again in 15 minutes.',
+    accountLocked: process.env.MSG_ACCOUNT_LOCKED || 'Your account is locked. Please try again in 15 minutes.',
 
-    profileSaveSuccess:
-      process.env.MSG_PROFILE_SAVE_SUCCESS || 'Profile updated successfully.',
-    profileSaveError:
-      process.env.MSG_PROFILE_SAVE_ERROR || 'Unable to update profile. Please try again.',
+    profileSaveSuccess: process.env.MSG_PROFILE_SAVE_SUCCESS || 'Profile updated successfully.',
+    profileSaveError: process.env.MSG_PROFILE_SAVE_ERROR || 'Unable to update profile. Please try again.',
 
     contactSuccess: process.env.MSG_CONTACT_SUCCESS || 'Thank you for contacting us.',
     contactLoadError:
-      process.env.MSG_CONTACT_LOAD_ERROR ||
-      'Unable to load the contact form. Please try again later.',
+      process.env.MSG_CONTACT_LOAD_ERROR || 'Unable to load the contact form. Please try again later.',
     contactSubmitError:
-      process.env.MSG_CONTACT_SUBMIT_ERROR ||
-      'Unable to submit your message. Please try again later.'
+      process.env.MSG_CONTACT_SUBMIT_ERROR || 'Unable to submit your message. Please try again later.'
   },
 
   /**
@@ -124,21 +117,6 @@ export const testData = {
    * Feature flags / capabilities.
    */
   capabilities: {
-
-  /**
-   * Newsletter signup routes and fixtures.
-   */
-  newsletter: {
-    homePath: process.env.HOME_PATH || '/',
-
-    // Used by tests that navigate away from the homepage and then return.
-    // Defaults to the Contact page route, which is already automated in this repo.
-    navigationAwayPath: process.env.NEWSLETTER_NAV_AWAY_PATH || process.env.CONTACT_PATH || '/contact',
-
-    validEmail: process.env.TEST_NEWSLETTER_VALID_EMAIL || 'newsletter.tester@example.com',
-    invalidEmail: process.env.TEST_NEWSLETTER_INVALID_EMAIL || 'invalid-email',
-    whitespaceOnly: '   '
-  },
     hasAnyResetLink:
       Boolean(process.env.RESET_LINK_FRESH) ||
       Boolean(process.env.RESET_LINK_EXPIRED) ||
@@ -147,56 +125,18 @@ export const testData = {
   },
 
   /**
-   * Contact form routes and fixtures.
+   * Newsletter signup routes and fixtures.
    */
-  contact: {
-    contactPath: process.env.CONTACT_PATH || '/contact',
+  newsletter: {
     homePath: process.env.HOME_PATH || '/',
-
-    // Patterns used for Playwright network stubbing.
-    // Update via env vars to match the AUT endpoints.
-    loadApiUrlPattern: process.env.CONTACT_LOAD_API_URL_PATTERN || '**/contact**',
-    submitApiUrlPattern: process.env.CONTACT_SUBMIT_API_URL_PATTERN || '**/contact**',
-
-    valid: {
-      name: process.env.TEST_CONTACT_NAME || 'Test User',
-      email: process.env.TEST_CONTACT_EMAIL || 'test.user@example.com',
-      message:
-        process.env.TEST_CONTACT_MESSAGE ||
-        'Hello! This is a test message generated by ConvoQA automation.'
-    },
+    navigationAwayPath: process.env.NEWSLETTER_NAV_AWAY_PATH || process.env.CONTACT_PATH || '/contact',
+    validEmail: process.env.TEST_NEWSLETTER_VALID_EMAIL || 'newsletter.tester@example.com',
+    invalidEmail: process.env.TEST_NEWSLETTER_INVALID_EMAIL || 'invalid-email',
     whitespaceOnly: '   '
   },
 
   /**
-   * Gets a reset link for a specific ConvoQA test id.
-   * @param testId - ConvoQA test id, e.g. "TC_REQ002_01".
-   * @returns Reset link if present; otherwise empty string.
+   * Contact form routes and fixtures.
    */
-  getResetLinkForTest(testId: string): string {
-    return (
-      process.env[`RESET_LINK_${testId}`] ||
-      // Backward compatible fallbacks
-      (testId === 'TC_REQ002_01' ? process.env.RESET_LINK_FRESH : undefined) ||
-      (testId === 'TC_REQ002_03' ? process.env.RESET_LINK_EXPIRED : undefined) ||
-      ''
-    );
-  },
-
-  /**
-   * Requires a reset link for a specific ConvoQA test id.
-   * @param testId - ConvoQA test id, e.g. "TC_REQ003_01".
-   * @returns Reset link.
-   */
-  requireResetLinkForTest(testId: string): string {
-    const key = `RESET_LINK_${testId}`;
-    return process.env[key] || requiredEnv(key);
-  },
-
-  requiredEnv
-};
-
-      'Unable to submit your message. Please try again later.',
-
-    newsletterSubscribeSuccess:
-      process.env.MSG_NEWSLETTER_SUBSCRIBE_SUCCESS || 'Successfully subscribed.'
+  contact: {
+    contactPath: process.env.CONTACT
